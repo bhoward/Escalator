@@ -1,0 +1,90 @@
+# Demo
+
+Here is one version of the factorial function (\\(n!=1\\cdot2\\cdot\\ldots\\cdot n\\)),
+defined using the `apply` method on a Scala object:
+
+//source 'edu/depauw/test.scala' <Factorial>
+
+So that we can output the factorial of five...
+
+//source 'edu/depauw/test.scala' <main>
+...like that.
+
+This is a console example:
+//console example
+import edu.depauw._
+Factorial(5)
+//end example
+
+Here is the entire `test.scala` file:
+
+//source 'edu/depauw/test.scala'
+
+And here is just the `Factorial` object:
+
+//source 'edu/depauw/test.scala' 'object Factorial'
+
+The `apply` method:
+
+//source 'edu/depauw/test.scala' 'object Factorial' / 'def apply'
+
+And the `if` statement by itself:
+
+//source 'edu/depauw/test.scala' 'object Factorial' / 'def apply' / 'if'
+
+Now, let's try for the `if` along with its `else` clause:
+
+//source 'edu/depauw/test.scala' 'object Factorial' / 'def apply' / 'if' - 'else'
+
+This should get the apply method, including its type and return type:
+
+//source 'edu/depauw/test.scala' object Factorial/def apply '(' Int ')' BigInt
+
+This should get the `def` for `incImplicit`:
+
+//source 'Values.scala' ~ inc
+
+While this should get the `val` for `incAnonymous`:
+
+//source 'Values.scala' val inc
+
+Finally, here's one with a list of selectors:
+
+//source 'Values.scala' val aString, val aDouble, def incImplicit
+
+For example,
+//example
+import edu.depauw._
+
+Factorial(5)
+
+val f = ((x: Int) => x*x)
+val x = 7
+
+f(
+x)
+
+println('aSymbol) // let's see what happens... SyntaxHighlighter doesn't know about symbols
+//end example
+
+Now a [specs](http://code.google.com/p/specs/) test:
+//test
+"'hello world' has 11 characters" in {
+  "hello world".size must be equalTo(11)
+}
+"'hello world' matches 'h.* w.*'" in {
+  "hello world" must be matching("h.* w.*")
+}
+"test fails" in {
+  2 + 2 must be equalTo(5)
+}
+"factorial of 5 is 120" in {
+  Factorial(5) must be equalTo(120)
+}
+//end test
+
+Escalator will capture output sent to the console as well as showing
+the expression result, just like the REPL:
+//example
+println("Here is some console output")
+//end example

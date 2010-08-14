@@ -1,0 +1,79 @@
+# Escalator Documentation
+
+An Escalator document is basically a [Markdown][1] document, with some extensions (indicated
+by an initial `//` on a line) that are caught by our preprocessor. The resulting HTML is
+supplemented by some JavaScript libraries to do some nicer formatting:
+
+* [SyntaxHighlighter][2] beautifies the code displays, and 
+* [jsMath][3] will format small amounts of \\(\TeX\\).
+
+The Markdown itself is processed by [Showdown][4], which is also written in JavaScript.
+
+Here are the currently recognized Escalator commands:
+
+* Running an example:
+
+        // example
+        ... Scala code ...
+        // end example
+    
+  The contained code will be executed by a Scala interpreter, line-by-line, similar to
+  how it would look in the REPL. The output consists of a preformatted block showing the
+  transcript of the execution, with the option of switching to a view of just the input
+  code.
+  
+* Running a [Specs][5] test:
+
+        // test
+        ... Scala code, as expected by Specs ...
+        // end test
+    
+  The contained code will be wrapped in a class extending `Specification with ScalaCheck`, with
+  appropriate imports for writing Specs (and [ScalaCheck][6]) specifications. The output will be
+  a report of running the tests, with passed/failed lines highlighted in green/red. As with
+  examples, there is an option to switch to viewing the raw input code.
+  
+* Including a code fragment:
+
+        // source filename
+        // source filename <label>
+        // source filename selector
+    
+  The first form includes the entire named file. The second form selects a block of code surrounded
+  by lines containing `<label>` and `</label>` (these will presumably be inserted as comments in the code),
+  where `label` is any string of characters other than `>`.
+  The third form selects the first block of lines matching the given selector, which may be a list of
+  patterns separated by `/`. Each pattern in turn will be used to select the next line containing the
+  given string; for example, the selector `class Foo / def bar` will match the first method whose name
+  starts with `bar` in the first class whose name starts with `Foo`. The selected block continues from
+  the first chosen line until, but not including, the next line which is at the same level of indentation
+  (lines with only `}` are treated as if they belong to the preceding indented block). This should match
+  common patterns of indenting class and function bodies. The final selector pattern may be a range:
+  `pat1 - pat2` will select the block indicated by `pat1` and continue the selection through the end of
+  the next block indicated by `pat2`; the range may be extended with additional `- pat` selectors.
+  More generally, the final selector may be a list of single or range patterns, separated by commas;
+  all of the selected blocks will be chosen in the order listed. Individual patterns may be surrounded
+  by single quotes to protect special characters. Outside of quotes, spaces are treated as wildcards, so
+  `def f(x: Int, y: String)` will be matched by `def f Int String`, for example. Finally, the tilde
+  character (`~`), unless it is inside quotes, will match any of Scala's declaration keywords: `package`,
+  `class`, `trait`, `object`, `type`, `def`, `val`, or `var`; this is a convenient shorthand for cases
+  where, for example, a `def` has been overridden by a `val`.
+  
+  Here is a complex example:
+  
+        // source Thing.scala class Foo / def bar '(' Int ')', ~ x - ~ y - ~ z, 'def -'
+        
+  This will look in file `Thing.scala` for three fragments, each contained in `class Foo`:
+    + The `def bar` method which takes a single `Int` argument;
+    + The range of declarations from `x` through `y` and continuing on to `z`;
+    + The method definition for the `-` operator.
+  
+  In the context of an example or test block, the selected code will be inserted. Otherwise, the
+  output will be one or more preformatted code blocks displaying the code fragment.
+    
+[1]: http://daringfireball.net/projects/markdown/ "Markdown"
+[2]: http://alexgorbatchev.com/SyntaxHighlighter/ "SyntaxHighlighter"
+[3]: http://www.math.union.edu/~dpvc/jsMath/ "jsMath"
+[4]: http://attacklab.net/showdown/ "Showdown"
+[5]: http://code.google.com/p/specs/ "Specs"
+[6]: http://code.google.com/p/scalacheck/ "ScalaCheck"

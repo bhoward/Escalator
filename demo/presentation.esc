@@ -1,0 +1,36 @@
+# Presentation Demo
+
+We can insert source code snippets by referring to tags:
+
+//source 'edu/depauw/test.scala' <Factorial>
+
+Or by searching:
+
+//source 'edu/depauw/test.scala' 'object Factorial'/'def apply'
+
+---
+
+For example,
+//example
+import edu.depauw._
+
+Factorial(5)
+//end example
+
+---
+
+Now a [specs](http://code.google.com/p/specs/) test:
+//test
+"'hello world' has 11 characters" in {
+  "hello world".size must be equalTo(11)
+}
+"'hello world' matches 'h.* w.*'" in {
+  "hello world" must be matching("h.* w.*")
+}
+"this test fails" in {
+  2 + 2 must be equalTo(5)
+}
+"factorial of 5 is 120" in {
+  Factorial(5) must be equalTo(120)
+}
+//end test

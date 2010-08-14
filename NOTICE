@@ -1,0 +1,74 @@
+Escalator
+Copyright 2010, Brian T. Howard (bhoward@depauw.edu)
+
+This product includes software developed at
+DePauw University, supported in part by
+NSF REU Grant number CCF-0851812.
+
+Some of the source code in this product was derived
+from the following open source projects:
+
+* Bare Bones Browser Launch for Java,
+  by Dem Pilafian,
+  http://www.centerkey.com/java/browser;
+  "Public Domain Software -- Free to Use as You Like"
+
+* NanoHTTPD,
+  Copyright 2001,2005-2010 Jarno Elonen
+  (elonen@iki.fi, http://iki.fi/elonen/);
+  "See the end of the source file for distribution license
+  (Modified BSD licence)"
+
+* scopt, by James Strachan,
+  http://github.com/jstrachan/scopt;
+  "Do whatever you like with it :)"
+
+* Autoindent for JTextArea, from
+  MySwing: Advanced Swing Utilites,
+  Copyright (C) 2005  Santhosh Kumar T,
+  http://www.jroller.com/santhosh/entry/autoindent_for_jtextarea;
+  "This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation"
+
+The following JavaScript libraries are included without modification:
+
+* mktree.js,
+  Copyright (c)2005-2009 Matt Kruse (javascripttoolbox.com);
+  "Dual licensed under the MIT and GPL licenses"
+  
+* showdown.js,
+  Copyright (c) 2007 John Fraser,
+  http://www.attacklab.net/;
+  Original Markdown Copyright (c) 2004-2005 John Gruber,
+  http://daringfireball.net/projects/markdown/;
+  "Redistributable under a BSD-style open source license"
+
+* SyntaxHighlighter,
+  Copyright (C) 2004-2010 Alex Gorbatchev,
+  "SyntaxHighlighter is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation"
+
+* jsMath, http://www.math.union.edu/~dpvc/jsMath/;
+  "JsMath is distributed under the Apache License 2.0"
+  
+The distribution also contains the following compiled libraries:
+
+* scala-library.jar, scala-compiler.jar, and scala-swing.jar,
+  Copyright (c) 2002-2010 EPFL, Lausanne,
+  http://www.scala-lang.org/;
+  Redistributable under the Scala License (modified BSD license)
+
+* scalacheck, http://code.google.com/p/scalacheck/;
+  "ScalaCheck is released under a BSD-like license"
+
+* specs, http://code.google.com/p/specs/;
+  Released under the MIT License
+
+* rhino, http://www.mozilla.org/rhino/;
+  "The source code for Rhino is available under MPL 1.1/GPL 2.0 license"
+
+The file BracketMatcher.scala was written by Brian T. Howard,
+based on Java code by Joshua Engel, described in
+http://www.informit.com/articles/article.aspx?p=31204.

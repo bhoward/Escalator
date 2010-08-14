@@ -1,0 +1,22 @@
+#Learning Scala in small bites
+
+In my advanced compilers course, students have write to things like lexer-generators, parser-generators and Scheme interpreters with first-class macros. To make these projects feasible, I recommend using Scala. Of course, Scala is a large, intricate language. It takes a long time to even become aware of all its features. To help learn Scala faster, I've created the series of small examples below, each of which highlights one or two aspects of the language.
+If you're looking for the next step after playing with these examples, I recommend Programming in Scala and Programming Scala.
+
+##Related blog articles:
+ * A lazy list exercise in Scala
+ * An interpreter written in Scala
+ * Okasaki's immutable red-black trees in Scala
+
+#Learning with REPL
+One of the useful features for learning Scala is its REPL (read-eval-print-loop) support. If you want to try something out in Scala, just run:
+
+    % scala
+
+and then try it out at the prompt.
+
+#Examples
+
+Each well-commented script below demonstrates a different facet of Scala.
+
+//source 'Values.scala' <main>

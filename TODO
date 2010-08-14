@@ -1,0 +1,9 @@
+Eat own dogfood...
+Testing, particularly cross-browser and OS
+Build final release distribution
+
+The future:
+templates, and more customization
+sbt integration
+scales
+look at unfiltered for the web server, and think about how to deploy on a "real" server

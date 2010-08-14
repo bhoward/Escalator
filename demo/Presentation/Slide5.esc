@@ -1,0 +1,9 @@
+# Escalator Documents
+
+* Follows the ideals of Literate Programming and Executable Documentation
+* Documents are intuitive and easy to write
+* These documents are eventually translated into HTML pages for easy dissemination
+* Tests and examples can be run dynamically: their output is then inserted into the HTML
+
+[prev](Slide4.html)
+[next](Slide6.html)

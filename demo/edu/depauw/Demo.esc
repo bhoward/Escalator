@@ -1,0 +1,15 @@
+# Demonstration
+
+Here is the main method from `test.scala`:
+
+//source 'test.scala' <main>
+
+Let's try running it:
+
+//example
+import edu.depauw.test
+
+test.main(Array[String]())
+//end example
+
+That's it.
