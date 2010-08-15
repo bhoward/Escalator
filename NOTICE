@@ -69,6 +69,8 @@ The distribution also contains the following compiled libraries:
 * rhino, http://www.mozilla.org/rhino/;
   "The source code for Rhino is available under MPL 1.1/GPL 2.0 license"
 
+The source tree includes the file AppleJavaExtensions.jar, and an accompanying README.txt, to enable compilation of certain user interface features for OS X. This library, which contains only method stubs, is only needed to compile from source, and is not included in the runtime distribution.
+
 The file BracketMatcher.scala was written by Brian T. Howard,
 based on Java code by Joshua Engel, described in
 http://www.informit.com/articles/article.aspx?p=31204.
