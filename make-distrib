@@ -1,0 +1,20 @@
+#!/bin/sh
+LIB1=target/scala_2.8.0
+LIB2=lib_managed/scala_2.8.0/compile
+LIB3=project/boot/scala-2.8.0/lib
+ZIPNAME=Escalator_2.0.zip
+
+rm -rf distrib/lib
+mkdir distrib/lib
+cp $LIB1/escalator*.jar distrib/lib/escalator.jar
+cp $LIB2/js*.jar distrib/lib/js.jar
+cp $LIB3/scala-compiler.jar distrib/lib
+cp $LIB3/scala-library.jar distrib/lib
+cp $LIB2/scala-swing*.jar distrib/lib/scala-swing.jar
+cp $LIB2/scalacheck*.jar distrib/lib/scalacheck.jar
+cp $LIB2/specs*.jar distrib/lib/specs.jar
+cp LICENSE NOTICE distrib
+rm -f $ZIPNAME
+cd distrib
+zip -r ../$ZIPNAME *
+cd ..
