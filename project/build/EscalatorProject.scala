@@ -6,6 +6,9 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
   val specs = "org.scala-tools.testing" %% "specs" % "1.6.5"
   val scalacheck = "org.scala-tools.testing" %% "scalacheck" % "1.7"
   val rhino = "rhino" % "js" % "1.7R2"
+
+  override def compileClasspath = super.compileClasspath +++ extraCompileClasspath
+  def extraCompileClasspath = path("lib_extra_compile") * "AppleJavaExtensions.jar"
   
   override def compileOptions = super.compileOptions ++ Seq(target(Target.Java1_5))
   
