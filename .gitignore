@@ -1,4 +1,6 @@
+bin/
 target/
 lib_managed/
 src_managed/
 project/boot/
+.scala_dependencies
