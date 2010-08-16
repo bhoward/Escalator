@@ -4,6 +4,8 @@ Build final release distribution
 
 The future:
 templates, and more customization
+use sxr
+format other languages; run scripts as well?
 sbt integration
 scales
 look at unfiltered for the web server, and think about how to deploy on a "real" server

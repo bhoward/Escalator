@@ -88,7 +88,7 @@ object Downalate {
       id += 1
       val srcId = "src" + id
       val resId = "res" + id
-      val rows = math.max(10, code.split("\n").size)
+      val rows = math.max(6, code.split("\n").size)
       
       <div>
         <textarea id={srcId} cols="80" rows={rows.toString}
