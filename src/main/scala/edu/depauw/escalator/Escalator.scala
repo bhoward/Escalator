@@ -148,15 +148,17 @@ object Escalator {
     // Create the output
     root.generate(config.target, None, config)
     
-    // Start the server if not already running
-    if (!serverStarted) {
-      server.start()
-      serverStarted = true
+    // Start the server if not already running, unless port is zero (headless mode)
+    if (config.port != 0) {
+      if (!serverStarted) {
+        server.start()
+        serverStarted = true
+      }
+      
+      // Open a browser window
+      com.centerkey.utils.BareBonesBrowserLaunch.openURL("http://localhost:" +
+          config.port + "/project/")
     }
-    
-    // Open a browser window
-    com.centerkey.utils.BareBonesBrowserLaunch.openURL("http://localhost:" +
-        config.port + "/project/")
   }
   
   def runExample(code: String): String = {

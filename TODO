@@ -1,4 +1,6 @@
 Eat own dogfood...
+Add to list of brackets that count as indented? (parens and square brackets?)
+For .md files, what is the HTML head? Add a way to specify page title (future: specify other info, such as scripts, styles, and desired template)
 Documentation and website
 Add a "no server" mode which does not start up the server or the browser
 Testing, particularly cross-browser and OS
@@ -7,7 +9,8 @@ Build final release distribution
 The future:
 templates, and more customization
 use sxr
-format other languages; run scripts as well?
+format other languages; run their scripts as well?
 sbt integration
 scales
-look at unfiltered for the web server, and think about how to deploy on a "real" server
+look at unfiltered for the web server and knockoff for the markdown
+think about how to deploy on a "real" server
