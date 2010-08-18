@@ -35,8 +35,5 @@ object Main {
     Escalator.init(args, None)
     
     Escalator.process()
-    
-    println("Ready - Press Return to Quit")
-    System.in.read()
   }
 }

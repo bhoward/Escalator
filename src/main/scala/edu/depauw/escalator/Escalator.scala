@@ -158,6 +158,9 @@ object Escalator {
       // Open a browser window
       com.centerkey.utils.BareBonesBrowserLaunch.openURL("http://localhost:" +
           config.port + "/project/")
+    
+      println("Ready - Press Return to Quit")
+      System.in.read()
     }
   }
   
