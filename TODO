@@ -1,4 +1,6 @@
 Eat own dogfood...
+Documentation and website
+Add a "no server" mode which does not start up the server or the browser
 Testing, particularly cross-browser and OS
 Build final release distribution
 
