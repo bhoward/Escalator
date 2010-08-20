@@ -109,17 +109,17 @@ case class DirNode(file: File) extends TreeNode {
         <script type="text/javascript" src="/resource/script/mktree.js"></script> ++
         <link rel="stylesheet" href="/resource/style/mktree.css" type="text/css" />
       )
-        
+      
+      val title = "root" + file.toString.stripPrefix(config.source.toString)
       val body = NodeSeq fromSeq (
-        <h1>{file.toString}</h1> ++
+        <h1>{title}</h1> ++
         (if (parent.isDefined) {
           <div><a href="..">Parent Directory</a></div>
         } else Nil) ++
         renderIndex("", true)
       )
             
-      Util.writeHTML(index, name, mktreeHead, body)
-      // TODO figure out where to put script and style directories
+      Util.writeHTML(index, title, mktreeHead, body)
     }
   }
     
