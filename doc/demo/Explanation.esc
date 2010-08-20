@@ -1,0 +1,43 @@
+# Sample Project
+
+This is just an example of what an Escalator document might look like.  This
+documentation is basically a [Markdown][1] document, with some extensions (indicated
+by an initial `//` on a line) that are caught by our preprocessor to handle extracted
+code fragments and embedded tests/examples.
+
+[1]: http://daringfireball.net/projects/markdown/ "Markdown"
+
+Here is the code for a factorial function, which computes \\(n!=\\prod\_{i=1}^n i\\):
+// source '/demo/util/test.scala' <Factorial>
+
+Now we can test it:
+// test
+import demo.util._
+
+"Factorial(7) is 5040" in {
+  Factorial(7) must_==(5040)
+}
+
+"Factorial(n) = Factorial(n-1) * n" in {
+  val smallInteger = Gen.choose(1, 100)
+
+  Prop.forAll(smallInteger) { n: Int =>
+    Factorial(n) == Factorial(n-1) * n
+  } must pass
+}
+
+"Factorial(-1) is 0" in {
+  Factorial(-1) must_==(0)
+}
+
+"Factorial(0) is 1" in {
+  Factorial(0) must_==(1)
+}
+// end test
+
+And here is an example of its use:
+// example
+demo.util.Factorial(20)
+// end example
+
+That's about it.

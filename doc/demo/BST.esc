@@ -1,0 +1,74 @@
+# Binary Search Trees
+
+A binary search tree (BST) is a tree with values of type `T` (which must have an ordering,
+that is, a `<` operator) at each node, such that all of the values in the left subtree are
+less than or equal to the value in the node, and all of the values in the right subtree are
+greater than or equal.
+
+Here is the definition of the basic tree data type, together with the subclasses for empty
+and non-empty nodes:
+// source 'BST.scala' trait Tree - class Node
+
+Here is an example of constructing a tree (which is _not_ a BST -- make sure you understand why),
+and flattening it to a list:
+// example
+import demo._
+Node(Tip, 42, Node(Node(Tip, 37, Tip), 54, Tip))
+Node(Tip, 42, Node(Node(Tip, 37, Tip), 54, Tip)).toList
+// end example
+
+Now we may define an insert method. This requires that `T` be viewable as an ordered type:
+// source 'BST.scala' object Tree / def insert
+
+Here is what happens when we insert the values 42, 37, and 54 into an empty BST:
+// example
+import demo._
+import Tree._
+insert(42, insert(37, insert(55, Tip)))
+// end example
+
+Once we have built an ordered tree, we may define the binary search operation:
+// source 'BST.scala' object Tree / def search
+
+Now let's run some tests:
+// test
+import demo._
+import Tree._
+val tree = insert(42, insert(37, insert(55, Tip)))
+"17 is not in the tree" in { search(17, tree) mustBe false }
+"37 is in the tree" in { search(37, tree) mustBe true }
+"47 is not in the tree" in { search(47, tree) mustBe false }
+"55 is in the tree" in { search(55, tree) mustBe true }
+// end test
+
+Finally, we may use BST insertion to define a sorting function, "tree sort":
+// source 'BST.scala' object Tree / def tsort
+
+Here are two examples of its use:
+// example
+import demo._
+import Tree._
+tsort(List(83, 67, 65, 76, 65))
+tsort("SCALA".toList)
+// end example
+
+## Running Time Analysis
+
+(This section demonstrates the ability to include mathematics in an
+Escalator Markdown document, by using the [jsMath] scripts -- these may
+require that you install some fonts to look as intended.)
+
+Each `insert` operation is \\(O(\\log k)\\) in the size \\(k\\) of the BST,
+on average, assuming a well-balanced tree (in fact, the implementation given
+here will produce a very poorly balanced tree for nearly-sorted input, but
+this is not the place to fix that). Since the size of the tree grows from
+1 to \\(n\\) after we insert each of \\(n\\) items, this gives us a total
+insertion time of \\[ \\sum\_{k=1}^n O(\\log k) = O(\\log n!) = O(n\\log n) \\].
+The running time of the `toList` operation is \\(O(n)\\) (_left as an
+exercise; as written, this also depends on the assumption of a well-balanced
+tree, although the `toList` method could be rewritten to take constant-time
+for all trees if we avoided using concatenation (`:::`)_). Therefore, the
+total average running time of tree sort is \\(O(n\\log n)\\), just like
+quicksort and mergesort.
+
+[jsMath]: http://www.math.union.edu/locate/jsMath "jsMath"

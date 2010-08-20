@@ -4,7 +4,7 @@
 LIB1=target/scala_2.8.0
 LIB2=lib_managed/scala_2.8.0/compile
 LIB3=project/boot/scala-2.8.0/lib
-ZIPNAME=Escalator_2.0.RC3.zip
+ZIPNAME=Escalator_2.0.RC4.zip
 
 mkdir staging
 mkdir staging/lib
