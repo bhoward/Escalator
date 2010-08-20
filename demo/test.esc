@@ -88,3 +88,6 @@ the expression result, just like the REPL:
 //example
 println("Here is some console output")
 //end example
+
+Here is a test of selecting multiple ranges, and how far they extend:
+// source 'test.scala' ~ test / ~ a, ~ b, ~ c, ~ c - ~ a

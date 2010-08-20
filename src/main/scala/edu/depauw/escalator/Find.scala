@@ -28,8 +28,8 @@ object Find {
    * by much).
    */
   def depth(line: String): Int = {
-    val indent = "^[ \t]*[\\{\\}]?".r.findAllIn(line).next
-    """[\{\}]""".r.findAllIn( indent ).length + (
+    val indent = "^[ \t]*[\\{\\}\\(\\)\\[\\]]?".r.findAllIn(line).next
+    """[\{\}\(\)\[\]]""".r.findAllIn( indent ).length + (
       16 * (" ".r.findAllIn( indent ).length + (
 	    16 * "\t".r.findAllIn( indent ).length)))
   }

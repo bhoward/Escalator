@@ -1,6 +1,6 @@
-Eat own dogfood...
-Add to list of brackets that count as indented? (parens and square brackets?)
+Allow double quotes
 For .md files, what is the HTML head? Add a way to specify page title (future: specify other info, such as scripts, styles, and desired template)
+What about images in the source tree?
 Better to have the site files outside the jar
 Documentation and website
 Add a "no server" mode which does not start up the server or the browser
