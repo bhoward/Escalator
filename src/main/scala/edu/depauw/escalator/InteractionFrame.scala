@@ -176,7 +176,7 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
         case Result.Approve =>
           gui.chooser.fileSelectionMode = SelectionMode.FilesOnly 
           val newFile = gui.chooser.selectedFile
-          if (file.get != newFile) {
+          if (!file.isDefined || file.get != newFile) {
             if (newFile.exists) {
               import Dialog._
               
