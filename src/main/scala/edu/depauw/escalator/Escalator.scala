@@ -186,7 +186,7 @@ object Escalator {
       }
     }
 
-    ret.substring(1) // skip initial \n
+    ret.stripPrefix("\n") // skip initial \n, if present
   }
   
   def runTest(code: String): String = {
