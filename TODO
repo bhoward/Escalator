@@ -3,10 +3,12 @@ Testing, particularly cross-browser and OS
 Build final release distribution
 
 The future:
+one-off downalation in interactive window? running tests?
+more flexible way of handling tests
 templates, and more customization
 specify page title and other info (scripts, styles, etc.)
 command to insert a tree (as in default index)
-Allow double quotes
+allow double quotes
 use sxr
 format other languages; run their scripts as well?
 sbt integration

@@ -159,34 +159,35 @@ object Escalator {
       com.centerkey.utils.BareBonesBrowserLaunch.openURL("http://localhost:" +
           config.port + "/project/")
     
-      println("Ready - Press Return to Quit")
-      System.in.read()
+      if (config.gui.isEmpty) {
+        println("Ready - Press Return to Quit")
+        System.in.read()
+      }
     }
   }
   
   def runExample(code: String): String = {
-    var ret = "" ; var buffer = ""
-      
+    var expr = ""; var ret = "> "
     val escout = new EscOutputStream
-
+    
     scala.Console.withOut(escout) {
       for (line <- code.lines) {
-        val expr = buffer.stripMargin + line
-      
+        expr += line + "\n"
+        
         if (expr.trim == "") {
           // Skip this line
         } else if (interpreter.interpret(expr) == IR.Incomplete) {
-          buffer += line + "\n| "
+          ret += line + "\n| "
         } else {
-          ret += "\n> "+buffer+line + "\n" + escout.string + writer.getBuffer
-          buffer = ""
+          ret += line + "\n" + escout.string + writer.getBuffer + "\n> "
           escout.clear()
           writer.getBuffer.delete(0, writer.getBuffer.length)
+          expr = ""
         }
       }
     }
-
-    ret.stripPrefix("\n") // skip initial \n, if present
+      
+    ret.dropRight(2) // Remove trailing prompt
   }
   
   def runTest(code: String): String = {
