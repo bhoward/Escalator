@@ -210,8 +210,8 @@ object Downalate {
    */
   def getLabeledSource(file: File, label: String): (String, Int) = {
     val source = Util.readFile(file)
-    val matchOpt = ("(?s)(.*?)([ \\t]*" + ESCESC + "<"+label+">\\s*)" + "(.*?)" +
-                    "\\s*?" + ESCESC + "</"+label+">").r.findFirstMatchIn( source )
+    val matchOpt = ("(?s)(.*?)([ \\t]*" + ESCESC + "\\s*<"+label+">\\s*)" + "(.*?)" +
+                    "\\s*?" + ESCESC + "\\s*</"+label+">").r.findFirstMatchIn( source )
                     
     matchOpt match {
       case Some(m) => (m.group(3), m.group(1).lines.length + 2)
