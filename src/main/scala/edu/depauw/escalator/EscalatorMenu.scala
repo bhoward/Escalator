@@ -37,9 +37,11 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
   /////////////////////////
   contents += new Menu("File") {
     // NEW: create a new file
-    contents += new MenuItem(frame.newAction) {
+    contents += new MenuItem(frame.newScalaAction) {
       peer.setAccelerator(stroke(VK_N))
     }
+
+    contents += new MenuItem(frame.newEscalatorAction)
 
     // OPEN: open a file
     contents += new MenuItem(frame.openAction)

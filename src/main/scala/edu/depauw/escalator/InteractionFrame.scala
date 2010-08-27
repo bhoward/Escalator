@@ -120,7 +120,7 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
       }
   }
   
-  val newAction = new Action("New") {
+  val newScalaAction = new Action("New .scala") {
     def apply() {
       if (querySave()) {
         source.text = ""
@@ -128,6 +128,18 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
         file = None
         modified = false
         setScalaMode()
+      }
+    }
+  }
+
+  val newEscalatorAction = new Action("New .esc") {
+    def apply() {
+      if (querySave()) {
+        source.text = ""
+        output.text = ""
+        file = None
+        modified = false
+        setEscalatorMode()
       }
     }
   }

@@ -59,6 +59,7 @@ object Escalator {
     
     settings.classpath.value = settings.classpath.value + File.pathSeparator + config.classpath
     interpreter = new ScalaInterpreter(settings, new PrintWriter(writer))
+    interpreter.initialize() // start it getting ready in the background
   }
   
   private def handleArgs(args: Array[String]) {
