@@ -1,0 +1,10 @@
+//console example
+def quiz(nums: List[Int]): List[Int] = nums match {
+  case Nil => Nil
+  case x :: xs =>
+    quiz(xs.filter(_ < x)) :::
+      x :: quiz(xs.filter(_ >= x))
+}
+
+quiz(3 :: 1 :: 4 :: 1 :: 5 :: Nil)
+//end example

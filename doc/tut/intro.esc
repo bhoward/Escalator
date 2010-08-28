@@ -1,0 +1,90 @@
+# Introduction to Scala
+
+[Scala](http://www.scala-lang.org) is a modern, hybrid object-functional programming language,
+designed to be interoperable with existing Java code. As such, it offers an easy step up from
+Java to a higher-level programming style.
+
+The following examples are based in part on
+[Learning Scala in Small Bites](http://matt.might.net/articles/learning-scala-in-small-bites/).
+
+## Values
+
+### Primitives
+
+Scala adopts many features from Java with only minor changes. For example, it shares all of Java's
+primitive types and most of its syntax for literals:
+// example
+val anInt = 42; val anotherInt = 0x2A
+val aDouble = 4.2; val anotherDouble = 42e-1
+val aFloat = 4.2f
+val aBoolean = true
+val aCharacter = '*'
+val aString = "Hello World"
+val aStringWithEscapes = "Hello\nWorld"
+val aRawString = """Hello
+World"""
+// end example
+One simple difference is Scala's use of the `val` keyword to assign a name to a value; writing
+`val anInt = 42` is like `final int anInt = 42` in Java. Note that you do not need to specify the
+type of `anInt` -- the Scala compiler can usually infer the types of variables. If you want to add
+a type specification, it goes after the identifier, separated by a colon: `val anInt: Int = 42`.
+Scala also has a `var` keyword to declare names whose value might change ("non-final", or "mutable"
+variables, which are the default in Java), but part of its functional nature is that these are
+often not needed.
+
+Another difference to note is that the "primitive" types all start with capital letters. This is to
+emphasize that Scala hides Java's distinction between primitive (e.g., `int`) and object (e.g.,
+`Integer`) types. In particular, primitive values may be the subject of a method call. Evaluate the
+following (click "Run" or hit Ctrl-Enter), then experiment with other values and methods:
+// console example
+42.toChar
+'*'.toInt
+// end example
+
+### Compound Values
+
+Scala provides a number of ways to construct _collections_ of values, similar to Java's collection
+classes and primitive arrays (though again with less of a distinction between "primitive" entities
+and those defined using the class mechanism). Many of these collections are _parameterized_ types,
+just as Java's collections (since 1.5) are frequently generic; for example, the type of integer
+arrays in Scala is `Array[Int]`.
+
+Here are some examples of compound values in Scala, together with some of their methods:
+// example
+val anArray = Array(3, 1, 4, 1, 5)
+anArray(0)
+anArray.size
+
+val aPair = (aString, aDouble)
+aPair._1
+aPair._2
+
+val aTriple = (anInt, anotherInt, aString)
+aTriple._3
+
+val aList = List(3, 1, 4, 1, 5)
+aList.head
+aList.tail
+aList.size
+aList.sum
+
+val aRange = 1 to 5
+aRange.head
+aRange.tail
+aRange.size
+aRange.sum
+
+val aSet = Set(3, 1, 4, 1, 5)
+aSet.contains(2)
+aSet.size
+
+val aMap = Map(3 -> "foo", 4 -> "bar")
+aMap.size
+aMap(3)
+// end example
+A special case of the tuple construction is the `Unit` type, whose only value is `()`. Since this
+type has only one value, it conveys no information -- this is analogous to the (poorly named)
+`void` type in Java. If you see a function whose return type is `Unit`, this is a signal that the
+function works by causing a "side-effect" (such as generating output or changing a mutable variable).
+In a pure functional language, such functions are disallowed (since part of the notion of a function
+being "pure" is that it have no side-effects), but Scala is not pure.

@@ -1,0 +1,81 @@
+## Functions
+
+There are many ways to create and use function-like values in Scala:
+// example
+// Explicit function:
+def id(x: Int): Int = x
+
+// Anonymous function:
+val anonId = (x: Int) => x
+
+// object with apply method:
+object Id {
+  def apply(x: Int) = x
+}
+// end example
+
+The code `Id(42)` turns into the method call `Id.apply(42)`.
+
+// example
+// class with apply method:
+class Identity {
+  def apply(x: Int) = x
+}
+val myId = new Identity
+
+// anonymous class with apply method:
+val myOtherId = new {
+  def apply(x: Int) = x
+}
+// end example
+
+Here are uses of the above function-like values:
+// example
+id(3)
+anonId(3)
+Id.apply(3)
+myId.apply(3)
+Id(3)
+myId(3)
+myOtherId(3)
+// end example
+
+Here are some more examples of functions:
+// example
+// Multi-argument function:
+def h(x: Int, y: Int): Int = x + y
+
+// A Curried multi-argument function:
+def hC(x: Int)(y: Int): Int = x + y
+
+h(3, 4)
+hC(3)(4)
+val three_plus = hC(3) _
+val plus_four = hC(_: Int)(4)
+
+three_plus(10)
+plus_four(10)
+
+// A procedure (returns Unit):
+def proc(a: Int) {
+  println("I'm a procedure.")
+}
+proc(10)
+
+// An argument-less procedure:
+def argless: Unit = println("argless got called!")
+
+argless
+argless
+
+// Lazy fields are argless functions that cache their result:
+class LazyClass {
+  lazy val x = { println("Evaluating x"); 3 }
+}
+
+val lc = new LazyClass
+lc.x
+lc.x
+lc.x
+// end example
+

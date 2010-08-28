@@ -1,0 +1,175 @@
+# Scala Comparisons with Java
+
+A good way to get a feel for (small-scale) programming in Scala is to look at a variety of ways of
+performing some simple tasks, comparing them with how they would be written in Java. Again, some of these
+examples are adapted from
+[Learning Scala in small bites](http://matt.might.net/articles/learning-scala-in-small-bites/)
+
+## Factorial
+
+A simple example of a function on integers is the factorial: n! = 1 * 2 * ... * n.
+Here are several ways to write this in Java and Scala.
+
+Using a `while` loop:
+// example
+def fact0(n: Int): Int = {
+  var i = n
+  var result = 1
+  while (i > 0) {
+    result = result * i
+    i -= 1
+  }
+  result
+}
+// end example
+  Compare this with the equivalent Java code, and notice there are only a few differences:
+  
+    static int fact0(int n) {
+      int i = n;
+      int result = 1;
+      while (i > 0) {
+        result = result * i;
+        i--;
+      }
+      return result;
+    }
+
+Here are some examples of running this:
+// example
+fact0(0)
+fact0(5)
+fact0(10)
+fact0(33)
+fact0(34)
+// end example
+
+Clearly something is wrong with the larger values, since we have overflowed the capacity of an `Int`.
+Scala makes it easy to use the `BigInt` type as well:
+// example
+def fact1(n: Int): BigInt = {
+  var i = n
+  var result = BigInt(1)
+  while (i > 0) {
+    result = result * i
+    i -= 1
+  }
+  result
+}
+fact1(0)
+fact1(5)
+fact1(10)
+fact1(33)
+fact1(34)
+// end example
+
+Instead of a `while` loop, it would be more common in Java to write this with a `for` loop:
+
+    static int fact2(int n) {
+      int result = BigInteger.valueOf(1);
+      for (int i = 1; i <= n; i++) {
+        result = result.multiply(BigInteger.valueOf(i));
+      }
+      return result;
+    }
+    
+Scala does not have this kind of `for` loop; instead, it offers a version which iterates over a
+collection of values (in this case, a `Range`):
+// example
+def fact2(n: Int): BigInt = {
+  var result = BigInt(1)
+  for (i <- 1 to n) {
+    result = result * i
+  }
+  result
+}
+fact2(0)
+fact2(5)
+fact2(10)
+fact2(33)
+fact2(34)
+// end example
+
+In a functional language, it is often natural to write functions recursively:
+// example
+def fact3(n: Int): BigInt = {
+  if (n <= 0) {
+    1
+  } else {
+    BigInt(n) * fact3(n - 1)
+  }
+}
+fact3(0)
+fact3(5)
+fact3(10)
+fact3(33)
+fact3(34)
+// end example
+
+In Java, this would look like:
+
+    static BigInteger fact3(int n) {
+      if (n <= 0) {
+        return BigInteger.valueOf(1);
+      } else {
+        return BigInteger.valueOf(n).multiply(fact3(n - 1));
+      }
+    }
+
+Instead of using an `if` statement, recursive functions are frequently defined by
+_pattern matching_ on the structure of an argument. In the case of an `Int`, this is
+similar to the `switch` statement in Java; later we will see much more powerful forms
+of patterns.
+
+// example
+def fact4(n: Int): BigInt = n match {
+  case 0 => 1
+  case _ => BigInt(n) * fact4(n - 1)
+}
+fact4(0)
+fact4(5)
+fact4(10)
+fact4(33)
+fact4(34)
+// end example
+
+This compares to:
+
+    static BigInteger fact4(int n) {
+      switch (n) {
+      case 0:
+        return BigInteger.valueOf(1);
+      default:
+        return BigInteger.valueOf(n).multiply(fact4(n - 1));
+      }
+    }
+
+Instead of explicitly using recursion, functional languages encourage using _higher-order_
+functions (that is, functions taking other functions as arguments) to abstract out common
+patterns of operations. In this case, we are taking the numbers 1 through `n` and inserting
+a multiplication operation between each pair of values; this pattern is known as a _fold_,
+and Scala defines a function called `foldLeft` which implements it:
+
+// example
+def fact5(n: Int) = (1 to n).foldLeft(BigInt(1))((a: BigInt, b: Int) => a * b)
+fact5(0)
+fact5(5)
+fact5(10)
+fact5(33)
+fact5(34)
+// end example
+
+Scala is able to do a certain amount of _type inference_:
+// example
+def fact6(n: Int) = (1 to n).foldLeft(BigInt(1))((a, b) => a * b)
+fact6(0)
+fact6(5)
+fact6(10)
+fact6(33)
+fact6(34)
+// end example
+
+Finally, the action of multiplying together all the items in a collection is common enough that
+it is simply available as a method:
+// console example
+(1 to 34).product
+// end example
