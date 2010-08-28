@@ -13,4 +13,27 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
   override def compileOptions = super.compileOptions ++ Seq(target(Target.Java1_5))
   
   override def mainClass = Some("edu.depauw.escalator.Main")
+  
+  override def packagePaths = mainClasses // exclude mainResources from jar
+  
+  // the following is adapted from http://gracelessfailures.com/2009/11/24/build-package-zip-sbt.html
+  def distPath = (
+    // NOTE the double hashes (##) hoist the files in the preceeding directory
+    // to the top level - putting them in the "base directory" in sbt's terminology
+    ((outputPath ##) / defaultJarName) +++
+    mainResources +++
+    mainDependencies.scalaJars +++
+    descendents(managedDependencyRootPath ** "compile" ##, "*.jar")
+  )
+  
+  // creates a sane classpath including all JARs and populates the manifest with it
+  override def manifestClassPath = Some(
+    distPath.getFiles
+    .filter(_.getName.endsWith(".jar"))
+    .map(_.getName).mkString(" ") // TODO add the resources here
+  )
+  
+  def distName = "Escalator-%s.zip".format(version)
+  
+  lazy val zip = zipTask(distPath, "dist", distName) dependsOn (`package`) describedAs("Zips up the project.")
 }

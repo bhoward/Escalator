@@ -1,12 +1,14 @@
 Do processing from menu (and setting of paths?)
 Remove ProcessingFrame
 One executable; no args or "-gui" starts gui on current directory (and in gui, setting the project root sets the output and classpath defaults)
+Option to not insert consoles (for static web sites)
 Why don't result numbers reset to 0?
-Better to have the site files outside the jar
+Better to have the site files outside the jar; remove jsMath?
 Testing, particularly cross-browser and OS
 Build final release distribution
 
 The future:
+switch to SH 3.0, and make it work with AJAX
 one-off downalation in interactive window? running tests?
 more flexible way of handling tests
 templates, and more customization

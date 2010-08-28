@@ -93,7 +93,7 @@ object Downalate {
       <div>
         <textarea id={srcId} cols="80" rows={rows.toString}
           onkeydown={"return Escalator.handleKey(event, " + id + ", " + spec + ")"}>{ code }</textarea>
-        <small><a href="#" onclick={"Escalator.getResults(" + id + ", " + spec + ")"}>Run</a></small>
+        <small><a href="#" onclick={"Escalator.getResults(" + id + ", " + spec + "); return false"}>Run</a></small>
       </div> + "\n" +
       <div id={resId} style="background-color: #e0e0e0;">Click 'Run' or press Ctrl-Enter for results</div>
     }
