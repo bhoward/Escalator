@@ -149,7 +149,7 @@ case class FileNode(file: File) extends TreeNode {
   def outputName = strategy.outputName
   
   def generate(target: File, parent: Option[DirNode], config: Config) {
-    for (gui <- Escalator.config.gui) gui.setStatus("Processing " + file)
+    for (gui <- Escalator.gui) gui.setStatus("Processing " + file)
     
     // parent should never be None here
     strategy.generate(this, target, parent.get, config)

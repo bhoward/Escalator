@@ -16,24 +16,48 @@ package edu.depauw.escalator
 
 import java.io.File
 
-import org.github.scopt._
-
 /**
- * Application starting point for the Escalator command-line tool.
+ * Application starting point for Escalator.
  * 
  * Usage:
- * scala edu.depauw.escalator.Main [source [target]]
- * - source is directory containing source files to be processed;
- *     default is current directory
- * - target is directory to contain generated tree of html files;
- *     default is source/esc-site
+ * scala edu.depauw.escalator.Main [-gui] [source]
+ * - no arguments, or with -gui, starts a GUI
+ * - source is directory containing source files to be processed
  * 
  * @author Brian Howard
  */
 object Main {
+  val onOSX = System.getProperty("mrj.version") != null
+  
   def main(args: Array[String]) {
-    Escalator.init(args, None)
+    Escalator.showGUI = args.isEmpty
+    var realArgs = args
     
-    Escalator.process()
+    if (realArgs.size > 0 && realArgs(0) == "-gui") {
+      realArgs = realArgs.slice(1, realArgs.size)
+      Escalator.showGUI = true
+    }
+    
+    if (realArgs.isEmpty) {
+      Escalator.config.source = None
+    } else {
+      Escalator.config.source = Some(new File(realArgs(0)))
+    }
+    
+    Escalator.init()
+    
+    if (Escalator.showGUI) {
+      if (onOSX) {
+        System.setProperty("apple.laf.useScreenMenuBar", "true")
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Escalator")
+      }
+      
+      swing.Swing.onEDT {
+        Escalator.gui = Some(new GUI)
+      }
+    } else {
+      Escalator.gui = None
+      Escalator.process()
+    }
   }
 }

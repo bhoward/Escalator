@@ -98,8 +98,7 @@ case class EscalatorStrategy(outputName: String, rawName: String) extends FileSt
     val output = new File(target, outputName)
     val title = source.file.toString
     
-    Escalator.config.documentPath = source.file // yeah, it's ugly...
-    val bodyString = Util.markdown(Downalate(Util.readFile(source.file)))
+    val bodyString = Util.markdown(Downalate(Util.readFile(source.file), source.file))
     val body = scala.xml.Unparsed(bodyString)
     
     Util.writeHTML(output, title, SyntaxHighlighterHead, body)

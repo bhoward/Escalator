@@ -20,9 +20,7 @@ import java.awt.{Font => JFont}
 import javax.swing.JPanel
 import javax.swing.border.EmptyBorder
 
-class GUI(args: Array[String]) {
-  Escalator.init(args, Some(this))
-  
+class GUI {
   val chooser = new FileChooser(new java.io.File(System.getProperty("user.dir")))
     
   val mainframe = new ProcessingFrame(this)

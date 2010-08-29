@@ -19,10 +19,6 @@ from the following open source projects:
   "See the end of the source file for distribution license
   (Modified BSD licence)"
 
-* scopt, by James Strachan,
-  http://github.com/jstrachan/scopt;
-  "Do whatever you like with it :)"
-
 * Autoindent for JTextArea, from
   MySwing: Advanced Swing Utilites,
   Copyright (C) 2005  Santhosh Kumar T,

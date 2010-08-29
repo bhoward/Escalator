@@ -57,7 +57,7 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
     }
     
     title = "Escalator: " + fileName
-    if (GUIMain.onOSX) {
+    if (Main.onOSX) {
       peer.getRootPane.putClientProperty("Window.documentModified", modified)
     } else {
       if (modified) {
@@ -126,7 +126,6 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   val newScalaAction = new Action("New .scala") {
     icon = getIcon("/toolbarButtonGraphics/general/New16.gif")
     toolTip = "New Scala Script"
-    accelerator = Some(Util.stroke(VK_N))
     
     def apply() {
       if (querySave()) {
@@ -291,6 +290,12 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
     } else {
       "Redo"
     }
+    
+    // Keep the title out of the toolbar buttons, but put it in the toolTip:
+    undoButton.text = ""
+    undoAction.toolTip = undoAction.title
+    redoButton.text = ""
+    redoAction.toolTip = redoAction.title
   }
   
   val undoAction = new Action("Undo") {
@@ -318,6 +323,9 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
       updateUndoRedo()
     }
   }
+  
+  val undoButton = new Button(undoAction) { text = "" }
+  val redoButton = new Button(redoAction) { text = "" }
   
   val cutAction = new Action("Cut") {
     icon = getIcon("/toolbarButtonGraphics/general/Cut16.gif")
@@ -427,9 +435,8 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
     contents += new Button(openAction) { text = "" }
     contents += new Button(saveAction) { text = "" }
     peer.addSeparator()
-// These are commented out because I don't see how to keep the text empty
-//    contents += new Button(undoAction) { text = "" }
-//    contents += new Button(redoAction) { text = "" }
+    contents += undoButton
+    contents += redoButton
     contents += new Button(cutAction) { text = "" }
     contents += new Button(copyAction) { text = "" }
     contents += new Button(pasteAction) { text = "" }
@@ -450,7 +457,7 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
     layout(split) = Center
   }
   
-  menuBar = new EscalatorMenu(this)
+  menuBar = new EscalatorMenu(this, gui.mainframe)
   
   preferredSize = (800, 600)
   pack()

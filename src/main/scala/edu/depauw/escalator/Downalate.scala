@@ -20,6 +20,8 @@ import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings,
 
 object Downalate {
   var id = 0
+  var documentPath: File = _
+  
   val ESCESC = "//"
   
   val ExampleStart = (ESCESC + """\s*example\s*""").r
@@ -32,15 +34,17 @@ object Downalate {
   val FilePart = """('(?:\\'|[^'])*'|\S*)\s*(.*?)\s*""".r
   
   class DefaultState(val processed: String) {
-    def add(line: String) = line match {
+    def add(line: String): DefaultState = line match {
       case ExampleStart() =>
         new ExampleState(processed, "")
       case TestStart() =>
         new TestState(processed, "")
       case ConsoleExampleStart() =>
-        new ConsoleExampleState(processed, "")
+        if (Escalator.config.port != 0) new ConsoleExampleState(processed, "")
+        else new ExampleState(processed, "")
       case ConsoleTestStart() =>
-        new ConsoleTestState(processed, "")
+        if (Escalator.config.port != 0) new ConsoleTestState(processed, "")
+        else new TestState(processed, "")
       case SourceCmd(rest) =>
         new DefaultState(join(processed, wrap(getSource(rest))))
       case _ =>
@@ -158,8 +162,9 @@ object Downalate {
    * @param source Incoming escalator document, as a String
    * @return the expanded markdown version of the document
    */
-  def apply(source: String): String = {
+  def apply(source: String, path: File): String = {
     Escalator.interpreter.reset()
+    documentPath = path
     source.lines.foldLeft(new DefaultState(""))(_ add _).processed
   }
   
@@ -177,9 +182,9 @@ object Downalate {
       case FilePart(path, rest) => {
         val path2 = Util.unquote(path)
         val file = if (path2 startsWith "/") {
-          new File(Escalator.config.source, path2)
+          new File(Escalator.config.source.get, path2)
         } else {
-          new File(Escalator.config.documentPath.getParentFile, path2)
+          new File(documentPath.getParentFile, path2)
         }
         
         if (rest == "") {

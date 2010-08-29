@@ -14,15 +14,15 @@
 
 package edu.depauw.escalator
 
-import java.io.{File, StringWriter, PrintWriter}
+import java.io.{File, StringWriter, PrintWriter, FileInputStream}
 
 import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings,
       InterpreterResults => IR}
 
-import org.github.scopt._
-
 object Escalator {
   val config = new Config
+  var showGUI: Boolean = false
+  var gui: Option[GUI] = None
   
   val writer = new StringWriter()
   
@@ -40,12 +40,11 @@ object Escalator {
   var serverStarted = false
   
   /**
-   * Initialize the Escalator object from the command line parameters. This must be called first.
+   * Initialize the Escalator object. This must be called first.
    */
-  def init(args: Array[String], gui: Option[GUI]) {
-    handleArgs(args)
+  def init() {
+    handleArgs()
     updateClasspath()
-    config.gui = gui
   }
   
   /**
@@ -62,77 +61,61 @@ object Escalator {
     interpreter.initialize() // start it getting ready in the background
   }
   
-  private def handleArgs(args: Array[String]) {
-    var rest: List[String] = Nil
-      
-    val parser = new OptionParser("escalator") {
-      opt("cp", "classpath", "<path>", "classpath for running examples and tests", {
-        v: String => config.classpath = v
-      })
-      intOpt("p", "port", "port for localhost httpd (default: 8000)", {
-        v: Int => config.port = v
-      })
-      arglist("[source [target]]", "input and output directories (default: . and esc-site)", {
-        v: String => rest = rest ::: List(v)
-      })
-    }
-    
-    // Only call the parser if args is non-empty
-    // TODO OptionParser should allow empty arglist...
-    if (args.length > 0 && !parser.parse(args)) {
-      // Something was wrong
-      System.exit(1)
-    }
-    
-    val source = if (rest.length > 0) {
-      new File(rest(0))
-    } else {
-      new File(System.getProperty("user.dir"))
-    }
-    
-    val target = if (rest.length > 1) {
-      new File(rest(1))
-    } else {
-      new File(source, "esc-site")
-    }
-    
-    if (rest.length > 2) {
-      Console.err.println("Too many arguments")
-      exit(1)
-    }
-    
-    config.source = source
-    config.target = target
-  }
-  
-  def setSource(source: File) {
-    config.source = source
-    if (config.classpath == ".") {
-      // This is a hack, but it handles the simplest case of no arguments
+  private def handleArgs() {
+    // Set defaults
+    for (source <- config.source) {
+      config.target = new File(source, "esc-site")
       config.classpath = source.getAbsolutePath
+      config.port = if (showGUI) 8000 else 0
+      
+      val propFile = new File(source, ".esc-settings")
+      if (propFile.exists) {
+        val file = new FileInputStream(propFile)
+        val props = new java.util.Properties
+        props.load(file)
+        file.close
+        
+        if (props.containsKey("target")) {
+          config.target = new File(props.getProperty("target"))
+        }
+        if (props.containsKey("classpath")) {
+          config.classpath = props.getProperty("classpath")
+        }
+        if (props.containsKey("port")) {
+          config.port = props.getProperty("port").toInt
+        }
+      }
     }
   }
   
-  def getSource: File = config.source
-  
-  def setTarget(target: File) {
-    config.target = target
+  def chooseSource() {
+    for (g <- gui) {
+      import swing.FileChooser._
+      
+      g.chooser.fileSelectionMode = SelectionMode.DirectoriesOnly
+      g.chooser.showDialog(null, "Choose Source Directory") match {
+        case Result.Approve => {
+          config.source = Some(g.chooser.selectedFile)
+        }
+        
+        case _ => // Ignore
+      }
+    }
   }
-  
-  def getTarget: File = config.target
-  
-  def setClasspath(classpath: String) {
-    config.classpath = classpath
-    updateClasspath()
-  }
-  
-  def getClasspath: String = config.classpath
   
   def process() {
+    if (!config.source.isDefined) {
+      chooseSource()
+      if (!config.source.isDefined) return
+      handleArgs()
+    }
+    
+    val source = config.source.get
+    
     // Check the directories
-    if (!config.source.exists || !config.source.isDirectory) {
+    if (!source.exists || !source.isDirectory) {
       Console.err.println("Source directory invalid")
-      exit(1)
+      return
     }
     
     if (!config.target.exists) {
@@ -141,10 +124,11 @@ object Escalator {
     
     if (!config.target.exists || !config.target.isDirectory) {
       Console.err.println("Target directory invalid")
+      return
     }
     
     // Build the source tree
-    val root = TreeNode(config.source)
+    val root = TreeNode(source)
     
     // Create the output
     root.generate(config.target, None, config)
@@ -160,7 +144,7 @@ object Escalator {
       com.centerkey.utils.BareBonesBrowserLaunch.openURL("http://localhost:" +
           config.port + "/project/")
     
-      if (config.gui.isEmpty) {
+      if (gui.isEmpty) {
         println("Ready - Press Return to Quit")
         System.in.read()
       }

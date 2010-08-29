@@ -12,7 +12,7 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
   
   override def compileOptions = super.compileOptions ++ Seq(target(Target.Java1_5))
   
-  override def mainClass = Some("edu.depauw.escalator.GUIMain")
+  override def mainClass = Some("edu.depauw.escalator.Main")
   
   override def packagePaths = mainClasses // exclude mainResources from jar
   

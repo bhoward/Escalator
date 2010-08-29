@@ -17,10 +17,8 @@ package edu.depauw.escalator
 import java.io._
 
 class Config {
-  var source: File = _
+  var source: Option[File] = None
   var target: File = _
   var port: Int = 8000
   var classpath: String = "."
-  var documentPath: File = _
-  var gui: Option[GUI] = None
 }

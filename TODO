@@ -1,7 +1,4 @@
-Do processing from menu (and setting of paths?); remove or simplify ProcessingFrame
-Settings window (and option to load/save settings in project root)
-One executable; no args or "-gui" starts gui on current directory (and in gui, setting the project root sets the output and classpath defaults)
-Option to not insert consoles (for static web sites)
+Preferences window (save settings in project root)
 Why don't result numbers reset to 0? (Interpreter bug)
 Remove jsMath?
 Testing, particularly cross-browser and OS

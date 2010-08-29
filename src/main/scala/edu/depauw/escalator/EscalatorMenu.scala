@@ -27,12 +27,14 @@ import com.centerkey.utils.BareBonesBrowserLaunch
 ////////////////////////////
 //////  MENUS - GUI  ///////
 ////////////////////////////
-class EscalatorMenu(frame: InteractionFrame) extends MenuBar {  
+class EscalatorMenu(frame: InteractionFrame, mainframe: ProcessingFrame) extends MenuBar {  
   /////////////////////////
   // 1. FILE OPERATIONS  //
   /////////////////////////
   contents += new Menu("File") {
-    // NEW: create a new file
+    // NEW: create a new window
+    contents += new MenuItem(mainframe.interactAction)
+    
     contents += new MenuItem(frame.newScalaAction) {
       peer.setIcon(null)
     }
@@ -57,7 +59,7 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
     // CLOSE: close the current document
     contents += new MenuItem(frame.closeAction)
 
-    if (GUIMain.onOSX) {
+    if (Main.onOSX) {
       OSXHelper.setQuitHandler(frame.exitAction.queryApply())
     } else {
       contents += new Separator
@@ -108,6 +110,7 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
     contents += new MenuItem(frame.runAction) {
       peer.setIcon(null)
     }
+    contents += new MenuItem(mainframe.processAction)
     
     contents += new Separator
     
@@ -135,7 +138,7 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
       }
     }
     contents += new Separator
-    if (GUIMain.onOSX) {
+    if (Main.onOSX) {
       OSXHelper.setAboutHandler(frame.aboutAction.apply())
     } else {
       contents += new MenuItem(frame.aboutAction)
