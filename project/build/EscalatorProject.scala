@@ -12,7 +12,7 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
   
   override def compileOptions = super.compileOptions ++ Seq(target(Target.Java1_5))
   
-  override def mainClass = Some("edu.depauw.escalator.Main")
+  override def mainClass = Some("edu.depauw.escalator.GUIMain")
   
   override def packagePaths = mainClasses // exclude mainResources from jar
   
@@ -23,14 +23,15 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
     ((outputPath ##) / defaultJarName) +++
     mainResources +++
     mainDependencies.scalaJars +++
+    descendents(info.projectPath / "lib" ##, "*.jar") +++
     descendents(managedDependencyRootPath ** "compile" ##, "*.jar")
   )
   
   // creates a sane classpath including all JARs and populates the manifest with it
   override def manifestClassPath = Some(
     distPath.getFiles
-    .filter(_.getName.endsWith(".jar"))
-    .map(_.getName).mkString(" ") // TODO add the resources here
+    .filter(file => file.getName.endsWith(".jar") && file.getName != defaultJarName)
+    .map(_.getName).mkString(" ") + " ."
   )
   
   def distName = "Escalator-%s.zip".format(version)

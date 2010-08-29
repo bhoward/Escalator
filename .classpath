@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="project/boot/scala-2.8.0/lib/scala-compiler.jar"/>
 	<classpathentry kind="lib" path="lib_managed/scala_2.8.0/compile/scalacheck_2.8.0-1.7.jar"/>
 	<classpathentry kind="lib" path="lib_managed/scala_2.8.0/compile/specs_2.8.0-1.6.5.jar"/>
+	<classpathentry kind="lib" path="lib/jlfgr-1_0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

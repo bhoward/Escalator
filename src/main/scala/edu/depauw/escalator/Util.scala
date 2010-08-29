@@ -15,12 +15,17 @@
 package edu.depauw.escalator
 
 import java.io._
+import javax.swing.KeyStroke
 
 import scala.xml.NodeSeq
 
 import org.mozilla.{javascript => js}
 
 object Util {
+  val shortcutMask = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
+  def stroke(keyCode : Int) = KeyStroke.getKeyStroke(keyCode, shortcutMask)
+  def altStroke(keyCode : Int) = KeyStroke.getKeyStroke(keyCode, shortcutMask + java.awt.event.InputEvent.ALT_MASK)
+
   /**
    * This function opens and prepares all the text in the file for parsing.
    * No parsing is done here in this function, though.

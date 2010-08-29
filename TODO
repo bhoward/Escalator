@@ -1,9 +1,9 @@
-Do processing from menu (and setting of paths?)
-Remove ProcessingFrame
+Do processing from menu (and setting of paths?); remove or simplify ProcessingFrame
+Settings window (and option to load/save settings in project root)
 One executable; no args or "-gui" starts gui on current directory (and in gui, setting the project root sets the output and classpath defaults)
 Option to not insert consoles (for static web sites)
-Why don't result numbers reset to 0?
-Better to have the site files outside the jar; remove jsMath?
+Why don't result numbers reset to 0? (Interpreter bug)
+Remove jsMath?
 Testing, particularly cross-browser and OS
 Build final release distribution
 
@@ -12,9 +12,9 @@ switch to SH 3.0, and make it work with AJAX
 one-off downalation in interactive window? running tests?
 more flexible way of handling tests
 templates, and more customization
-specify page title and other info (scripts, styles, etc.)
+specify page title and other info (scripts, styles, etc.) -- see pandoc
 command to insert a tree (as in default index)
-allow double quotes
+allow double quotes in // commands
 use sxr
 format other languages; run their scripts as well?
 sbt integration

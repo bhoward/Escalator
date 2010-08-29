@@ -19,7 +19,7 @@ import swing.event._
 
 import javax.swing.text._
 import javax.swing.undo._
-import javax.swing.{AbstractAction, KeyStroke}
+import javax.swing.AbstractAction
 import java.awt.event.KeyEvent._
 
 import com.centerkey.utils.BareBonesBrowserLaunch
@@ -27,41 +27,35 @@ import com.centerkey.utils.BareBonesBrowserLaunch
 ////////////////////////////
 //////  MENUS - GUI  ///////
 ////////////////////////////
-class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
-  val shortcutMask = java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
-  def stroke(keyCode : Int) = KeyStroke.getKeyStroke(keyCode, shortcutMask)
-  def altStroke(keyCode : Int) = KeyStroke.getKeyStroke(keyCode, shortcutMask + java.awt.event.InputEvent.ALT_MASK)
-  
+class EscalatorMenu(frame: InteractionFrame) extends MenuBar {  
   /////////////////////////
   // 1. FILE OPERATIONS  //
   /////////////////////////
   contents += new Menu("File") {
     // NEW: create a new file
     contents += new MenuItem(frame.newScalaAction) {
-      peer.setAccelerator(stroke(VK_N))
+      peer.setIcon(null)
     }
 
     contents += new MenuItem(frame.newEscalatorAction)
 
     // OPEN: open a file
-    contents += new MenuItem(frame.openAction)
+    contents += new MenuItem(frame.openAction) {
+      peer.setIcon(null)
+    }
 
     // SAVE: save the current file
     contents += new MenuItem(frame.saveAction) {
-      peer.setAccelerator(stroke(VK_S))
+      peer.setIcon(null)
     }
 
     // SAVE AS: save the current file under the name specified by the user
-    contents += new MenuItem(frame.saveAsAction) {
-      peer.setAccelerator(altStroke(VK_S))
-    }
+    contents += new MenuItem(frame.saveAsAction)
 
     contents += new Separator
 
     // CLOSE: close the current document
-    contents += new MenuItem(frame.closeAction){
-      peer.setAccelerator(stroke(VK_W))
-    }
+    contents += new MenuItem(frame.closeAction)
 
     if (GUIMain.onOSX) {
       OSXHelper.setQuitHandler(frame.exitAction.queryApply())
@@ -78,32 +72,31 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
   ///////////////////////
   contents += new Menu("Edit"){
     contents += new MenuItem(frame.undoAction) {
-      peer.setAccelerator(stroke(VK_Z))
+      peer.setIcon(null)
       mnemonic = Key.U
     }
     contents += new MenuItem(frame.redoAction) {
-      peer.setAccelerator(stroke(VK_Y))
+      peer.setIcon(null)
       mnemonic = Key.R
     }
     contents += new Separator
-    contents += new MenuItem("Cut") {
-      peer.setAction(new DefaultEditorKit.CutAction())
-      text = "Cut"
+    contents += new MenuItem(frame.cutAction) {
+      peer.setIcon(null)
+      peer.setText("Cut")
       mnemonic = Key.T
     }
-    contents += new MenuItem("Copy") {
-      peer.setAction(new DefaultEditorKit.CopyAction())
-      text = "Copy"
+    contents += new MenuItem(frame.copyAction) {
+      peer.setIcon(null)
+      peer.setText("Copy")
       mnemonic = Key.C
     }
-    contents += new MenuItem("Paste") {
-      peer.setAction(new DefaultEditorKit.PasteAction())
-      text = "Paste"
+    contents += new MenuItem(frame.pasteAction) {
+      peer.setIcon(null)
+      peer.setText("Paste")
       mnemonic = Key.P
     }
-    contents += new MenuItem("Select All") {
-      peer.setAction(frame.source.peer.getActionMap().get(DefaultEditorKit.selectAllAction))
-      text = "Select All"
+    contents += new MenuItem(frame.selectAllAction) {
+      peer.setText("Select All")
       mnemonic = Key.A
     }
   }
@@ -112,13 +105,24 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
   // 3. INTERACTION    //
   ///////////////////////
   contents += new Menu("Interact"){
-    contents += new MenuItem(frame.runAction)
+    contents += new MenuItem(frame.runAction) {
+      peer.setIcon(null)
+    }
+    
     contents += new Separator
+    
     contents += new MenuItem(frame.toEscAction)
     contents += new MenuItem(frame.toScalaAction)
+    
     contents += new Separator
-    contents += new MenuItem(frame.fontSmallAction)
-    contents += new MenuItem(frame.fontLargeAction)
+    
+    contents += new MenuItem(frame.fontSmallAction) {
+      peer.setIcon(null)
+    }
+    
+    contents += new MenuItem(frame.fontLargeAction) {
+      peer.setIcon(null)
+    }
   }
   
   ///////////////////////
@@ -127,7 +131,7 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
   contents += new Menu("Help"){
     contents += new MenuItem("Documentation") {
       reactions += {
-        case ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://scales.csc.depauw.edu/Escalator/Documentation.html")
+        case ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://scales.csc.depauw.edu/tut/EscalatorDoc.html")
       }
     }
     contents += new Separator
@@ -138,7 +142,7 @@ class EscalatorMenu(frame: InteractionFrame) extends MenuBar {
     }
     contents += new MenuItem("Escalator Home") {
       reactions += {
-        case ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://scales.csc.depauw.edu/Escalator/")
+        case ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://scales.csc.depauw.edu/")
       }
     }
     contents += new Menu("Bug Reporting") {

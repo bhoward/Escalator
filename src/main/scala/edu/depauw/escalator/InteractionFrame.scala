@@ -14,11 +14,13 @@
 
 package edu.depauw.escalator
 
-import java.awt.{Font => AWTFont}
 import java.io.File
+import java.awt.{Font => AWTFont}
+import java.awt.event.KeyEvent._
 
 import javax.swing.WindowConstants
 import javax.swing.undo.UndoManager
+import javax.swing.text.DefaultEditorKit
 import javax.swing.event.{UndoableEditListener, UndoableEditEvent}
 
 import scala.actors.Actor
@@ -66,10 +68,9 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   
   val split = new SplitPane(Orientation.Vertical,
       new ScrollPane(source), new ScrollPane(output))
-  val buttons = new BoxPanel(Orientation.Horizontal)
   
-  val SmallFont = new AWTFont("Monospaced", AWTFont.PLAIN, 12)
-  val LargeFont = new AWTFont("Monospaced", AWTFont.BOLD, 18)
+  val SmallFont = new AWTFont("Monospaced", AWTFont.PLAIN, 14)
+  val LargeFont = new AWTFont("Monospaced", AWTFont.BOLD, 24)
   
   def setFont(font: AWTFont) {
     source.font = font
@@ -120,7 +121,13 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
       }
   }
   
+  def getIcon(name: String) = new javax.swing.ImageIcon(getClass.getResource(name))
+  
   val newScalaAction = new Action("New .scala") {
+    icon = getIcon("/toolbarButtonGraphics/general/New16.gif")
+    toolTip = "New Scala Script"
+    accelerator = Some(Util.stroke(VK_N))
+    
     def apply() {
       if (querySave()) {
         source.text = ""
@@ -145,6 +152,9 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
 
   val openAction = new Action("Open...") {
+    icon = getIcon("/toolbarButtonGraphics/general/Open16.gif")
+    toolTip = "Open..."
+    
     def apply() {
       if (querySave()) {
         import FileChooser._
@@ -170,6 +180,10 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
 
   val saveAction: Action = new Action("Save") {
+    icon = getIcon("/toolbarButtonGraphics/general/Save16.gif")
+    toolTip = "Save"
+    accelerator = Some(Util.stroke(VK_S))
+    
     def apply() {
       if (file.isDefined) {
         Util.writeFile(file.get, source.text)
@@ -181,6 +195,8 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
 
   val saveAsAction = new Action("Save As...") {
+    accelerator = Some(Util.altStroke(VK_S))
+    
     def apply() {
       import FileChooser._
       
@@ -208,6 +224,8 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
 
   val closeAction = new Action("Close") {
+    accelerator = Some(Util.stroke(VK_W))
+    
     def apply() {
       queryExit()
     }
@@ -226,6 +244,9 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
 
   val runAction = new Action("Run") {
+    icon = getIcon("/toolbarButtonGraphics/media/Play16.gif")
+    toolTip = "Run Scala Code"
+    
     def apply() {
       Actor.actor {
         Escalator.interpreter.reset()
@@ -235,12 +256,20 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
   
   val fontSmallAction = new Action("Small Font") {
+    icon = getIcon("/toolbarButtonGraphics/general/ZoomOut16.gif")
+    toolTip = "Small Font"
+    accelerator = Some(Util.stroke(VK_MINUS))
+    
     def apply() {
       setFont(SmallFont)
     }
   }
   
   val fontLargeAction = new Action("Large Font") {
+    icon = getIcon("/toolbarButtonGraphics/general/ZoomIn16.gif")
+    toolTip = "Large Font"
+    accelerator = Some(Util.stroke(VK_PLUS))
+    
     def apply() {
       setFont(LargeFont)
     }
@@ -265,6 +294,10 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
   
   val undoAction = new Action("Undo") {
+    icon = getIcon("/toolbarButtonGraphics/general/Undo16.gif")
+    toolTip = "Undo"
+    accelerator = Some(Util.stroke(VK_Z))
+    
     enabled = false
 
     def apply() {
@@ -274,12 +307,45 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   }
 
   val redoAction = new Action("Redo") {
+    icon = getIcon("/toolbarButtonGraphics/general/Redo16.gif")
+    toolTip = "Redo"
+    accelerator = Some(Util.stroke(VK_Y))
+    
     enabled = false
 
     def apply() {
       undo.redo()
       updateUndoRedo()
     }
+  }
+  
+  val cutAction = new Action("Cut") {
+    icon = getIcon("/toolbarButtonGraphics/general/Cut16.gif")
+    toolTip = "Cut to Clipboard"
+    
+    override lazy val peer = new DefaultEditorKit.CutAction()
+    def apply() {}
+  }
+  
+  val copyAction = new Action("Copy") {
+    icon = getIcon("/toolbarButtonGraphics/general/Copy16.gif")
+    toolTip = "Copy to Clipboard"
+    
+    override lazy val peer = new DefaultEditorKit.CopyAction()
+    def apply() {}
+  }
+  
+  val pasteAction = new Action("Paste") {
+    icon = getIcon("/toolbarButtonGraphics/general/Paste16.gif")
+    toolTip = "Paste from Clipboard"
+    
+    override lazy val peer = new DefaultEditorKit.PasteAction()
+    def apply() {}
+  }
+  
+  val selectAllAction = new Action("Select All") {
+    override lazy val peer = source.peer.getActionMap().get(DefaultEditorKit.selectAllAction)
+    def apply() {}
   }
   
   val aboutAction = new Action("About...") {
@@ -291,8 +357,11 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   
   val toEscAction: Action = new Action("Convert to .esc") {
     def apply() {
-      if (!source.text.endsWith("\n")) source.text += "\n"
-      source.text = "//example\n" + source.text + "//end example\n"
+      if (source.text.trim != "") {
+        // Only wrap script as an example if there is a script...
+        if (!source.text.endsWith("\n")) source.text += "\n"
+        source.text = "//example\n" + source.text + "//end example\n"
+      }
       file = None // force a Save As...
       setEscalatorMode()
     }
@@ -352,16 +421,32 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
   
   setScalaMode()
   
-  buttons.contents += new Button(runAction)
-  buttons.contents += new Button(fontSmallAction)
-  buttons.contents += new Button(fontLargeAction)
-  buttons.contents += convertButton
+  val toolbar = new Component with SequentialContainer.Wrapper {
+    override lazy val peer= new javax.swing.JToolBar
+    
+    contents += new Button(openAction) { text = "" }
+    contents += new Button(saveAction) { text = "" }
+    peer.addSeparator()
+// These are commented out because I don't see how to keep the text empty
+//    contents += new Button(undoAction) { text = "" }
+//    contents += new Button(redoAction) { text = "" }
+    contents += new Button(cutAction) { text = "" }
+    contents += new Button(copyAction) { text = "" }
+    contents += new Button(pasteAction) { text = "" }
+    peer.addSeparator()
+    contents += new Button(fontSmallAction) { text = "" }
+    contents += new Button(fontLargeAction) { text = "" }
+    peer.addSeparator()
+    contents += new Button(runAction) { text = "" }
+    peer.addSeparator()
+    contents += convertButton
+  }
 
   file = None // Force the initial title
   contents = new BorderPanel {
     import BorderPanel.Position._
     
-    layout(buttons) = North
+    layout(toolbar) = North
     layout(split) = Center
   }
   

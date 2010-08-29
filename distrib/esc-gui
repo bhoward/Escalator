@@ -1,4 +1,0 @@
-#!/bin/sh
-ESCHOME=`dirname $0`
-ESCLIB=$ESCHOME/lib
-java -cp $ESCLIB/escalator.jar:$ESCLIB/js.jar:$ESCLIB/scala-compiler.jar:$ESCLIB/scala-library.jar:$ESCLIB/scala-swing.jar:$ESCLIB/scalacheck.jar:$ESCLIB/specs.jar edu.depauw.escalator.GUIMain $*
