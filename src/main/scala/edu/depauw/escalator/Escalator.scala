@@ -55,7 +55,7 @@ object Escalator {
       System.setProperty("scala.usejavacp", "true") // makes the 2.8 interpreter use java classpath
       new Settings()
     }
-    
+
     settings.classpath.value = settings.classpath.value + File.pathSeparator + config.classpath
     interpreter = new ScalaInterpreter(settings, new PrintWriter(writer))
     interpreter.initialize() // start it getting ready in the background

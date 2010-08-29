@@ -11,8 +11,10 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
   def extraCompileClasspath = path("lib_extra_compile") * "AppleJavaExtensions.jar"
   
   override def compileOptions = super.compileOptions ++ Seq(target(Target.Java1_5))
+  override def javaCompileOptions = super.javaCompileOptions ++ javaCompileOptions("-target", "1.5")
   
-  override def mainClass = Some("edu.depauw.escalator.Main")
+// TODO the executable jar version has some initialization problems, so this disables it for now...
+//  override def mainClass = Some("edu.depauw.escalator.Main")
   
   override def packagePaths = mainClasses // exclude mainResources from jar
   
@@ -30,7 +32,7 @@ class EscalatorProject(info: ProjectInfo) extends DefaultProject(info) {
   // creates a sane classpath including all JARs and populates the manifest with it
   override def manifestClassPath = Some(
     distPath.getFiles
-    .filter(file => file.getName.endsWith(".jar") && file.getName != defaultJarName)
+    .filter(file => file.getName.endsWith(".jar"))
     .map(_.getName).mkString(" ") + " ."
   )
   
