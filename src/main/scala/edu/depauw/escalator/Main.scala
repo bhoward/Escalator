@@ -20,9 +20,10 @@ import java.io.File
  * Application starting point for Escalator.
  * 
  * Usage:
- * scala edu.depauw.escalator.Main [-gui] [source]
+ * scala edu.depauw.escalator.Main [-gui] [root]
  * - no arguments, or with -gui, starts a GUI
- * - source is directory containing source files to be processed
+ * - root is project root directory to be processed
+ * Other config info goes in root/.esc-settings
  * 
  * @author Brian Howard
  */
@@ -39,9 +40,9 @@ object Main {
     }
     
     if (realArgs.isEmpty) {
-      Escalator.config.source = None
+      Escalator.config.root = None
     } else {
-      Escalator.config.source = Some(new File(realArgs(0)))
+      Escalator.config.root = Some(new File(realArgs(0)))
     }
     
     Escalator.init()

@@ -182,7 +182,7 @@ object Downalate {
       case FilePart(path, rest) => {
         val path2 = Util.unquote(path)
         val file = if (path2 startsWith "/") {
-          new File(Escalator.config.source.get, path2)
+          new File(Escalator.config.source, path2) // TODO should this be root instead?
         } else {
           new File(documentPath.getParentFile, path2)
         }

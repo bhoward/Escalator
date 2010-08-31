@@ -63,23 +63,27 @@ object Escalator {
   
   private def handleArgs() {
     // Set defaults
-    for (source <- config.source) {
-      config.target = new File(source, "esc-site")
-      config.classpath = source.getAbsolutePath
+    for (root <- config.root) {
+      config.source = root
+      config.target = new File(root, "esc-site")
+      config.classpath = root.getAbsolutePath
       config.port = if (showGUI) 8000 else 0
       
-      val propFile = new File(source, ".esc-settings")
+      val propFile = new File(root, ".esc-settings")
       if (propFile.exists) {
         val file = new FileInputStream(propFile)
         val props = new java.util.Properties
         props.load(file)
         file.close
         
+        if (props.containsKey("source")) {
+          config.source = new File(root, props.getProperty("source"))
+        }
         if (props.containsKey("target")) {
-          config.target = new File(props.getProperty("target"))
+          config.target = new File(root, props.getProperty("target"))
         }
         if (props.containsKey("classpath")) {
-          config.classpath = props.getProperty("classpath")
+          config.classpath = new File(root, props.getProperty("classpath")).getAbsolutePath // TODO handle a list of paths
         }
         if (props.containsKey("port")) {
           config.port = props.getProperty("port").toInt
@@ -88,14 +92,14 @@ object Escalator {
     }
   }
   
-  def chooseSource() {
+  def chooseRoot() {
     for (g <- gui) {
       import swing.FileChooser._
       
       g.chooser.fileSelectionMode = SelectionMode.DirectoriesOnly
-      g.chooser.showDialog(null, "Choose Source Directory") match {
+      g.chooser.showDialog(null, "Choose Root Directory") match {
         case Result.Approve => {
-          config.source = Some(g.chooser.selectedFile)
+          config.root = Some(g.chooser.selectedFile)
         }
         
         case _ => // Ignore
@@ -104,14 +108,14 @@ object Escalator {
   }
   
   def process() {
-    if (!config.source.isDefined) {
-      chooseSource()
-      if (!config.source.isDefined) return
+    if (!config.root.isDefined) {
+      chooseRoot()
+      if (!config.root.isDefined) return
       handleArgs()
       updateClasspath()
     }
     
-    val source = config.source.get
+    val source = config.source
     
     // Check the directories
     if (!source.exists || !source.isDirectory) {
