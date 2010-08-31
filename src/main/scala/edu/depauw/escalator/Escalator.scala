@@ -108,6 +108,7 @@ object Escalator {
       chooseSource()
       if (!config.source.isDefined) return
       handleArgs()
+      updateClasspath()
     }
     
     val source = config.source.get
