@@ -59,13 +59,11 @@ class EscalatorMenu(frame: InteractionFrame, mainframe: ProcessingFrame) extends
     // CLOSE: close the current document
     contents += new MenuItem(frame.closeAction)
 
-    if (Main.onOSX) {
-      OSXHelper.setQuitHandler(frame.exitAction.queryApply())
-    } else {
+    if (!Main.onOSX) {
       contents += new Separator
 
       // EXIT: exit the application
-      contents += new MenuItem(frame.exitAction)
+      contents += new MenuItem(mainframe.exitAction)
     }
   }
 
@@ -110,6 +108,7 @@ class EscalatorMenu(frame: InteractionFrame, mainframe: ProcessingFrame) extends
     contents += new MenuItem(frame.runAction) {
       peer.setIcon(null)
     }
+    contents += new MenuItem(mainframe.chooseRootAction)
     contents += new MenuItem(mainframe.processAction)
     
     contents += new Separator
@@ -131,34 +130,5 @@ class EscalatorMenu(frame: InteractionFrame, mainframe: ProcessingFrame) extends
   ///////////////////////
   // 4. HELP/ABOUT     //
   ///////////////////////
-  contents += new Menu("Help"){
-    contents += new MenuItem("Documentation") {
-      reactions += {
-        case ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://scales.csc.depauw.edu/tut/EscalatorDoc.html")
-      }
-    }
-    contents += new Separator
-    if (Main.onOSX) {
-      OSXHelper.setAboutHandler(frame.aboutAction.apply())
-    } else {
-      contents += new MenuItem(frame.aboutAction)
-    }
-    contents += new MenuItem("Escalator Home") {
-      reactions += {
-        case ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://scales.csc.depauw.edu/")
-      }
-    }
-    contents += new Menu("Bug Reporting") {
-      contents += new MenuItem("New ticket") {
-        reactions += {
-          case swing.event.ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://twiki.csc.depauw.edu/projects/scales/newticket")
-        }
-      }
-      contents += new MenuItem("View existing tickets") {
-        reactions += {
-          case swing.event.ButtonClicked(_) => BareBonesBrowserLaunch.openURL("http://twiki.csc.depauw.edu/projects/scales/report")
-        }
-      }
-    }
-  }
+  contents += mainframe.helpMenu
 }

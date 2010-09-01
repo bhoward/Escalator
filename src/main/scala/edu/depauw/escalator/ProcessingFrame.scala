@@ -21,6 +21,8 @@ import scala.swing._
 import Swing._
 
 class ProcessingFrame(gui: GUI) extends MainFrame {
+  mainframe =>
+  
   val status = new Label("Ready")
   val buttons = new BoxPanel(Orientation.Horizontal)
   
@@ -28,52 +30,6 @@ class ProcessingFrame(gui: GUI) extends MainFrame {
 
   status.horizontalAlignment = Alignment.Left
 
-// TODO put all this in a preferences pane, along with choosing port number (or no server)
-//  val chooseSourceAction = new Action("Set Source") {
-//    def apply() {
-//      import FileChooser._
-//      
-//      gui.chooser.fileSelectionMode = SelectionMode.DirectoriesOnly
-//      gui.chooser.showDialog(panel, "Choose Source Directory") match {
-//        case Result.Approve => {
-//          Escalator.setSource(gui.chooser.selectedFile)
-//        }
-//        
-//        case _ => // Ignore
-//      }
-//    }
-//  }
-//  
-//  val chooseTargetAction = new Action("Set Target") {
-//    def apply() {
-//      import FileChooser._
-//      
-//      gui.chooser.fileSelectionMode = SelectionMode.DirectoriesOnly
-//      gui.chooser.showDialog(panel, "Choose Target Directory") match {
-//        case Result.Approve => {
-//          Escalator.setTarget(gui.chooser.selectedFile)
-//        }
-//        
-//        case _ => // Ignore
-//      }
-//    }
-//  }
-//  
-//  val chooseClasspathAction = new Action("Set Classpath") {
-//    def apply() {
-//      import FileChooser._
-//      
-//      gui.chooser.fileSelectionMode = SelectionMode.FilesAndDirectories
-//      // TODO allow multiSelection? filter to only directories and jars?
-//      gui.chooser.showDialog(panel, "Choose Classpath") match {
-//        case Result.Approve => {
-//          Escalator.setClasspath(gui.chooser.selectedFile.getAbsolutePath)
-//        }
-//        
-//        case _ => // Ignore
-//      }
-//    }
-//  }
     
   val processAction = new Action("Process Source Tree") {
     def apply() {
@@ -85,6 +41,12 @@ class ProcessingFrame(gui: GUI) extends MainFrame {
     }
   }
   
+  val chooseRootAction = new Action("Choose Project Root") {
+    def apply() {
+      Escalator.chooseRoot()
+    }
+  }
+  
   val interactAction = new Action("New Interaction Window") {
     accelerator = Some(Util.stroke(java.awt.event.KeyEvent.VK_N))
 
@@ -92,6 +54,25 @@ class ProcessingFrame(gui: GUI) extends MainFrame {
       val interaction = new InteractionFrame(gui)
       interactions ::= interaction
       interaction.visible = true
+    }
+  }
+  
+  val exitAction = new Action("Exit") {
+    def apply() {
+      if (queryApply()) {
+        mainframe.dispose()
+      }
+    }
+    
+    def queryApply(): Boolean = {
+      gui.queryExit()
+    }
+  }
+
+  val aboutAction = new Action("About...") {
+    def apply() {
+      val about = new AboutFrame
+      about.visible = true
     }
   }
   
@@ -114,6 +95,30 @@ class ProcessingFrame(gui: GUI) extends MainFrame {
     
     layout(buttons) = Center
     layout(status) = South
+  }
+  
+  val helpMenu = new HelpMenu(this)
+  
+  menuBar = new MenuBar {
+    contents += new Menu("File") {
+      contents += new MenuItem(interactAction)
+      
+      if (Main.onOSX) {
+        OSXHelper.setQuitHandler(exitAction.queryApply())
+      } else {
+        contents += new Separator
+  
+        // EXIT: exit the application
+        contents += new MenuItem(exitAction)
+      }
+    }
+    
+    contents += new Menu("Interact"){
+      contents += new MenuItem(chooseRootAction)
+      contents += new MenuItem(processAction)
+    }
+    
+    contents += helpMenu
   }
   
   pack()

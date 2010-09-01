@@ -16,11 +16,14 @@ package edu.depauw.escalator
 
 import javax.swing.JEditorPane
 import javax.swing.text.html.HTMLEditorKit
+import javax.swing.event.{HyperlinkListener, HyperlinkEvent}
 
 import scala.swing._
 
+import com.centerkey.utils.{BareBonesBrowserLaunch => BBBL}
+
 class AboutFrame extends Frame() {
-  preferredSize = new Dimension(400, 400)
+  preferredSize = new Dimension(400, 300)
   // peer.setResizable( false )
   title = "About Escalator"
   val mainPanel = new BorderPanel
@@ -36,16 +39,22 @@ class AboutFrame extends Frame() {
     override lazy val peer = new JEditorPane() {
       setContentType("text/html")
       setEditorKit(new HTMLEditorKit())
-//      val tempField = new JTextField()
-//      setBorder(tempField.getBorder())
-      setText("<html>" + "<body>" + "Escalator" + "<br>" +
-        "version 2.0 RC1" + "<br>" + "<br>" +
-        "Developed at DePauw University by" + "<br>" +
-        "Emily Bruckart, Nathan Bude, and Dr. Brian Howard" + "<br>" +
-        "Copyright &copy; 2010, Brian T. Howard" + "<br>" +
-        "Supported in part by NSF REU Grant number CCF-0851812")
-
-      setEditable( false )
+      setText("""<html><body><h1>Escalator</h1>
+      		      |<h2>version 2.0 RC10</h2>
+      		      |Developed at DePauw University by<br>
+                |Emily Bruckart, Nathan Bude, and Dr. Brian Howard<br>
+                |Copyright &copy; 2010, Brian T. Howard<br>
+                |Supported in part by NSF REU Grant number CCF-0851812<br>
+                |<a href="http://scales.csc.depauw.edu/"><code>http://scales.csc.depauw.edu/</code></a>
+                |</body></html>""".stripMargin)
+      setEditable(false)
+      addHyperlinkListener(new HyperlinkListener {
+        def hyperlinkUpdate(e: HyperlinkEvent) { 
+          if (e.getEventType == HyperlinkEvent.EventType.ACTIVATED) { 
+            BBBL.openURL(e.getURL.toString)
+          }
+        }
+      })
     }
   }
 

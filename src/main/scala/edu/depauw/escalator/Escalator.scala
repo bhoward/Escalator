@@ -100,6 +100,8 @@ object Escalator {
       g.chooser.showDialog(null, "Choose Root Directory") match {
         case Result.Approve => {
           config.root = Some(g.chooser.selectedFile)
+          handleArgs()
+          updateClasspath()
         }
         
         case _ => // Ignore
@@ -110,9 +112,7 @@ object Escalator {
   def process() {
     if (!config.root.isDefined) {
       chooseRoot()
-      if (!config.root.isDefined) return
-      handleArgs()
-      updateClasspath()
+      if (!config.root.isDefined) return // can't proceed
     }
     
     val source = config.source

@@ -230,18 +230,6 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
     }
   }
 
-  val exitAction = new Action("Exit") {
-    def apply() {
-      if (queryApply()) {
-        gui.mainframe.dispose()
-      }
-    }
-    
-    def queryApply(): Boolean = {
-      gui.queryExit()
-    }
-  }
-
   val runAction = new Action("Run") {
     icon = getIcon("/toolbarButtonGraphics/media/Play16.gif")
     toolTip = "Run Scala Code"
@@ -356,13 +344,6 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
     def apply() {}
   }
   
-  val aboutAction = new Action("About...") {
-    def apply() {
-      val about = new AboutFrame
-      about.visible = true
-    }
-  }
-  
   val toEscAction: Action = new Action("Convert to .esc") {
     def apply() {
       if (source.text.trim != "") {
@@ -410,10 +391,10 @@ class InteractionFrame(val gui: GUI) extends Frame { frame =>
 
   def id(text: String) = text
   
-  val Example = """(?s).*?//[ \t]*example[ \t]*\n(.*?)//[ \t]*end[ \t]+example[ \t]*\n(.*)""".r
+  val Example = """(?s).*?//[ \t]*(console[ \t]*)?example[ \t]*\n(.*?)//[ \t]*end[ \t]+example[ \t]*\n(.*)""".r
   
   def extract(doc: String): String = doc match {
-    case Example(code, rest) => code + extract(rest)
+    case Example(_, code, rest) => code + extract(rest)
     case _ => ""
   }
     
