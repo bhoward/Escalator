@@ -51,23 +51,23 @@ trait FileStrategy {
   def renderIndex(path: String, name: String): NodeSeq =
     <li><a href={path + outputName}>{name}</a></li>
   
-  // TODO in 2.8, can just concat XML elements with +:
-  val SyntaxHighlighterHead = scala.xml.NodeSeq fromSeq (
-    <script type="text/javascript" src="/resource/script/escalator.js"></script> ++
-    <script type="text/javascript" src="/resource/jsMath/easy/load.js"></script> ++
-    <script type="text/javascript" src="/resource/script/shCore.js"></script> ++
-    <script type="text/javascript" src="/resource/script/shBrushJava.js"></script> ++
-    <script type="text/javascript" src="/resource/script/shBrushScala.js"></script> ++
-    <script type="text/javascript" src="/resource/script/shBrushPlain.js"></script> ++
-    <script type="text/javascript" src="/resource/script/shBrushSpecs.js"></script> ++
-    <link type="text/css" rel="stylesheet" href="/resource/style/shCore.css" /> ++
-    <link type="text/css" rel="stylesheet" href="/resource/style/shThemeDefault.css" /> ++
+  val SyntaxHighlighterHead = {
+    val rp = Escalator.config.resourcepath
+    
+    <script type="text/javascript" src={rp + "/script/escalator.js"}></script> +:
+    <script type="text/javascript" src={rp + "/jsMath/easy/load.js"}></script> +:
+    <script type="text/javascript" src={rp + "/script/shCore.js"}></script> +:
+    <script type="text/javascript" src={rp + "/script/shBrushJava.js"}></script> +:
+    <script type="text/javascript" src={rp + "/script/shBrushScala.js"}></script> +:
+    <script type="text/javascript" src={rp + "/script/shBrushPlain.js"}></script> +:
+    <script type="text/javascript" src={rp + "/script/shBrushSpecs.js"}></script> +:
+    <link type="text/css" rel="stylesheet" href={rp + "/style/shCore.css"} /> +:
+    <link type="text/css" rel="stylesheet" href={rp + "/style/shThemeDefault.css"} /> +:
     <script type="text/javascript">
-      SyntaxHighlighter.config.clipboardSwf = '/resource/script/clipboard.swf';
+      SyntaxHighlighter.config.clipboardSwf = '{ rp }/script/clipboard.swf';
       SyntaxHighlighter.all()
     </script>
-  )
-
+  }
 }
 
 /**

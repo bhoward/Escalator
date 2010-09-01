@@ -88,6 +88,9 @@ object Escalator {
         if (props.containsKey("port")) {
           config.port = props.getProperty("port").toInt
         }
+        if (props.containsKey("resourcepath")) {
+          config.resourcepath = props.getProperty("resourcepath")
+        }
       }
     }
   }

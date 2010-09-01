@@ -105,10 +105,10 @@ case class DirNode(file: File) extends TreeNode {
     if (!children.exists(_.outputName == "index.html")) {
       // Generate an index page
       val index = new File(subTarget, "index.html")
-      val mktreeHead = NodeSeq fromSeq (
-        <script type="text/javascript" src="/resource/script/mktree.js"></script> ++
-        <link rel="stylesheet" href="/resource/style/mktree.css" type="text/css" />
-      )
+      val rp = Escalator.config.resourcepath 
+      val mktreeHead = 
+        <script type="text/javascript" src={rp + "/script/mktree.js"}></script> +:
+        <link rel="stylesheet" href={rp + "/style/mktree.css"} type="text/css" />
       
       val title = "root" + file.toString.stripPrefix(config.source.toString)
       val body = NodeSeq fromSeq (

@@ -22,4 +22,5 @@ class Config {
   var target: File = _
   var port: Int = 8000
   var classpath: String = "."
+  var resourcepath: String = "/resource"
 }
