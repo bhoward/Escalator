@@ -130,5 +130,5 @@ class EscalatorMenu(frame: InteractionFrame, mainframe: ProcessingFrame) extends
   ///////////////////////
   // 4. HELP/ABOUT     //
   ///////////////////////
-  contents += mainframe.helpMenu
+  contents += new HelpMenu(mainframe)
 }

@@ -20,9 +20,15 @@ import event.ButtonClicked
 import com.centerkey.utils.{BareBonesBrowserLaunch => BBBL}
 
 class HelpMenu(mainframe: ProcessingFrame) extends Menu("Help") {
-  contents += new MenuItem("Documentation") {
+  contents += new MenuItem("Escalator Documentation") {
     reactions += {
       case ButtonClicked(_) => BBBL.openURL("http://scales.csc.depauw.edu/tut/EscalatorDoc.html")
+    }
+  }
+  
+  contents += new MenuItem("Scala API Documentation") {
+    reactions += {
+      case ButtonClicked(_) => BBBL.openURL("http://www.scala-lang.org/api")
     }
   }
   
@@ -37,6 +43,12 @@ class HelpMenu(mainframe: ProcessingFrame) extends Menu("Help") {
   contents += new MenuItem("Escalator Home") {
     reactions += {
       case ButtonClicked(_) => BBBL.openURL("http://scales.csc.depauw.edu/")
+    }
+  }
+  
+  contents += new MenuItem("Scala Home") {
+    reactions += {
+      case ButtonClicked(_) => BBBL.openURL("http://www.scala-lang.org/")
     }
   }
   
