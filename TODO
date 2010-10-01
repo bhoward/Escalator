@@ -5,6 +5,7 @@ Testing, particularly cross-browser and OS
 Build final release distribution
 
 The future:
+allow a single .esc file to be converted to .html, without a full source tree
 switch to SH 3.0, and make it work with AJAX
 one-off downalation in interactive window? running tests?
 more flexible way of handling tests
