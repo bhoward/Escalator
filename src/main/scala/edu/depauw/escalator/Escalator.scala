@@ -16,8 +16,8 @@ package edu.depauw.escalator
 
 import java.io.{File, StringWriter, PrintWriter, FileInputStream}
 
-import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings,
-      InterpreterResults => IR}
+import scala.tools.nsc.Settings
+import scala.tools.nsc.interpreter.{IMain => ScalaInterpreter, IR}
 
 object Escalator {
   val config = new Config

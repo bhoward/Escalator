@@ -16,9 +16,6 @@ package edu.depauw.escalator
 
 import java.io._
 
-import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings,
-                        InterpreterResults => IR}
-
 /**
  * This is like a StringWriter, but for byte streams
  */

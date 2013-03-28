@@ -127,8 +127,13 @@ public class NanoHTTPD
 				{
 					try
 					{
-						while( true )
-							new HTTPSession( ss.accept());
+						try {
+							while( true )
+								new HTTPSession( ss.accept());
+						}
+						finally {
+							ss.close();
+						}
 					}
 					catch ( IOException ioe )
 					{}

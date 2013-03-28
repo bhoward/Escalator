@@ -15,8 +15,6 @@
 package edu.depauw.escalator
 
 import java.io._
-import scala.tools.nsc.{Interpreter => ScalaInterpreter, Settings,
-			InterpreterResults => IR}
 
 object Downalate {
   var id = 0

@@ -37,7 +37,7 @@ object Util {
   def readFile(file: File): String = {
     try {
       scala.io.Source.fromFile(file).mkString
-    } catch { case _ => "[!file not found: "+file+"!]" }
+    } catch { case _ : IOException => "[!file not found: "+file+"!]" }
   }
 
   def writeFile(file: File, text: String) {
@@ -45,7 +45,7 @@ object Util {
       val fw = new FileWriter( file )
       fw.write( text, 0, text.length() )
       fw.close()
-    } catch { case ioe => println(ioe) }
+    } catch { case ioe : IOException => println(ioe) }
   }
 
   /**
